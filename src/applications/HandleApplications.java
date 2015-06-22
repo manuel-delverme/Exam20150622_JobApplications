@@ -105,10 +105,13 @@ public class HandleApplications {
 	}
 	
 	public int setWinner(String applicantName, String positionName) throws ApplicationException {
-		if(!this.applicantPerPosition.containsKey(applicantName)){
+		if(!this.applicantPerPosition.containsKey(positionName)){
 			throw new ApplicationException();
 		}
-		if(!this.winnerPerPosition.containsKey(positionName)){
+		if(!this.applicantPerPosition.get(positionName).contains(applicantName)){
+			throw new ApplicationException();
+		}
+		if(this.winnerPerPosition.containsKey(positionName)){
 			throw new ApplicationException();
 		}
 		Applicant app = this.applicants.get(applicantName);
@@ -119,7 +122,7 @@ public class HandleApplications {
 		for(Skill s : app.getSkills()){
 			level = 0;
 			for(Skill sk : pos.getSkills()){
-				if(sk.getName() == s.getName())
+				if(sk.getName().equals(s.getName()))
 				{
 					level += s.getLevel();
 				}
@@ -144,10 +147,13 @@ public class HandleApplications {
 	public SortedMap<String, Long> skill_nApplicants() {
 		SortedMap<String,Long> retr = new TreeMap<String,Long>();
 		Long num;
-		for(String s : this.skills.keySet()){
-			num = retr.getOrDefault(s,0L);			
-			num += 1;
-			retr.put(s, num);
+		for(String aname : this.applicants.keySet()){
+			Applicant a = this.applicants.get(aname);
+			for(Skill s : a.getSkills()){
+				num = retr.getOrDefault(s.getName(),0L);			
+				num += 1;
+				retr.put(s.getName(), num);
+			}
 		}
 		return retr;
 	}
