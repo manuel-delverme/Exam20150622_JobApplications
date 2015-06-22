@@ -1,6 +1,7 @@
 package applications;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HandleApplications {
 
@@ -83,11 +84,11 @@ public class HandleApplications {
 	public void enterApplication(String applicantName, String positionName) throws ApplicationException {
 		ArrayList<Skill> reqSkills = this.positions.get(positionName).getSkills();
 		Applicant applic = this.applicants.get(applicantName);
-		if(this.applicantPerPosition.get(positionName).contains(applicantName)){
+		if(this.applicantPerPosition.containsKey(positionName) && this.applicantPerPosition.get(positionName).contains(applicantName)){
 			throw new ApplicationException();
 		}
-		for(Skill skill : reqSkills){
-			if(!applic.getSkills().contains(skill.getName())){
+		for(Skill reqSkill : reqSkills){
+			if(!applic.getSkills().stream().map(s -> s.getName()).collect(Collectors.toList()).contains(reqSkill.getName())){
 				throw new ApplicationException();
 			}
 		}

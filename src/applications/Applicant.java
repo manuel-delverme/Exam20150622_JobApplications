@@ -30,7 +30,7 @@ public class Applicant {
 		List<Skill> l =  this.skills.stream().sorted((p,q) -> p.getName().compareTo(q.getName())).collect(Collectors.toList());
 		String retr = new String();
 		for(Skill s : l){
-			retr.concat(","+s.getName());
+			retr = retr.concat(","+s.getName()+":"+s.getLevel());
 		}
 		return retr.substring(1);
 	}
