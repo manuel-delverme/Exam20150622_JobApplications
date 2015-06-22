@@ -11,7 +11,7 @@ public class Skill {
 	private String name;
 	private Integer level;
 	
-	private ArrayList<Position> positions;
+	private ArrayList<Position> positions = new ArrayList<Position>();
 	public Skill(String name) {
 		this.name = name;
 		// TODO Auto-generated constructor stub
