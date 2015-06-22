@@ -78,16 +78,6 @@ public class Test {
 		String maxPosition = ha.maxPosition();
 		System.out.println(maxPosition); //gui designer junior
 	}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
