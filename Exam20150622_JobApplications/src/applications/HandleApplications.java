@@ -7,6 +7,10 @@ public class HandleApplications {
 	private Map<String,Skill> skills = new HashMap<String,Skill>();
 	private Map<String,Position> positions = new HashMap<String,Position>();
 	private Map<String,Applicant> applicants = new HashMap<String,Applicant>();
+	private Map<String, ArrayList<String>> positionsPerApplicant = new HashMap<String,ArrayList<String>>();
+	private Map<String, ArrayList<String>> applicantPerPosition = new HashMap<String,ArrayList<String>>();
+	private Map<String, String> winnerPerPosition = new HashMap<String,String>();
+	
 	
 	public void addSkills(String... names) throws ApplicationException {
 		for(String name: names){
@@ -77,11 +81,63 @@ public class HandleApplications {
 	}
 	
 	public void enterApplication(String applicantName, String positionName) throws ApplicationException {
+		ArrayList<Skill> reqSkills = this.positions.get(positionName).getSkills();
+		Applicant applic = this.applicants.get(applicantName);
+		if(this.applicantPerPosition.get(positionName).contains(applicantName)){
+			throw new ApplicationException();
+		}
+		for(Skill skill : reqSkills){
+			if(!applic.getSkills().contains(skill.getName())){
+				throw new ApplicationException();
+			}
+		}
+		ArrayList<String> a = this.positionsPerApplicant.getOrDefault(applicantName,new ArrayList<String>());
+		a.add(positionName);
+		this.positionsPerApplicant.put(applicantName,a);
 		
+		ArrayList<String> b = this.applicantPerPosition.getOrDefault(positionName,new ArrayList<String>());
+		b.add(applicantName);
+		this.applicantPerPosition.put(positionName,b);
+		Position p = this.positions.get(positionName);
+		p.addApplicant(applic);
+		this.positions.replace(positionName, p);
 	}
 	
 	public int setWinner(String applicantName, String positionName) throws ApplicationException {
-		return 0;
+		if(!this.applicantPerPosition.containsKey(applicantName)){
+			throw new ApplicationException();
+		}
+		if(!this.winnerPerPosition.containsKey(positionName)){
+			throw new ApplicationException();
+		}
+		Applicant app = this.applicants.get(applicantName);
+		Position pos = this.positions.get(positionName);
+		int retr = 0;
+		int level = 0;
+		int allLevel = 0;
+		for(Skill s : app.getSkills()){
+			level = 0;
+			for(Skill sk : pos.getSkills()){
+				if(sk.getName() == s.getName())
+				{
+					level += s.getLevel();
+				}
+			}
+			allLevel += s.getLevel();
+			retr += level;
+		}
+		int skillreqCnt = 0;
+		for(Skill sk : pos.getSkills()){
+			skillreqCnt += 1;
+		}
+
+		if(retr <= 6*skillreqCnt){
+			throw new ApplicationException();
+		}
+		this.winnerPerPosition.put(positionName, applicantName);
+		pos.setWinner(applicantName);
+		this.positions.replace(positionName,pos);
+		return allLevel;
 	}
 	
 	public SortedMap<String, Long> skill_nApplicants() {
