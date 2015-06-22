@@ -150,9 +150,11 @@ public class HandleApplications {
 		for(String aname : this.applicants.keySet()){
 			Applicant a = this.applicants.get(aname);
 			for(Skill s : a.getSkills()){
-				num = retr.getOrDefault(s.getName(),0L);			
-				num += 1;
-				retr.put(s.getName(), num);
+				if(this.skills.containsKey(s.getName())){
+					num = retr.getOrDefault(s.getName(),0L);			
+					num += 1;
+					retr.put(s.getName(), num);
+				}
 			}
 		}
 		return retr;
