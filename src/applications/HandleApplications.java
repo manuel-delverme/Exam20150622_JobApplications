@@ -148,7 +148,6 @@ public class HandleApplications {
 			num += 1;
 			retr.put(s, num);
 		}
-		//aa
 		return retr;
 	}
 	public String maxPosition() {
