@@ -28,7 +28,7 @@ public class HandleApplications {
 			
 			Position newPosition = new Position(name);
 			for(String skillname: skillNames){
-				if(!this.skills.containsKey(name)){
+				if(!this.skills.containsKey(skillname)){
 					throw new ApplicationException();
 				}
 				Skill sk = this.skills.get(skillname);
