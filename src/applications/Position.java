@@ -7,8 +7,8 @@ public class Position {
 
 	
 	private String name;
-	private ArrayList<Skill> skills;
-	private ArrayList<Applicant> applicants;
+	private ArrayList<Skill> skills = new ArrayList<Skill>();
+	private ArrayList<Applicant> applicants = new ArrayList<Applicant>();
 	private String winner = "";
 	public Position(String name) {
 		this.name = name;
