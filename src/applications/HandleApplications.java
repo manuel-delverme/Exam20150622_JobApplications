@@ -141,10 +141,31 @@ public class HandleApplications {
 	}
 	
 	public SortedMap<String, Long> skill_nApplicants() {
-		return null;
+		SortedMap<String,Long> retr = new TreeMap<String,Long>();
+		Long num;
+		for(String s : this.skills.keySet()){
+			num = retr.getOrDefault(s,0L);			
+			num += 1;
+			retr.put(s, num);
+		}
+		return retr;
 	}
 	public String maxPosition() {
-		return null;
+		String mNa = "";
+		Integer mNu = -1;
+		Integer cnt = 0;
+		for(String p : this.applicantPerPosition.keySet()){
+			mNu = 0;
+			cnt = 0;
+			for ( String app : this.applicantPerPosition.get(p)){
+				cnt += 1;
+			}
+			if(cnt > mNu){
+				mNa = p;
+				mNu = cnt;
+			}
+		}
+		return mNa;
 	}
 }
 
