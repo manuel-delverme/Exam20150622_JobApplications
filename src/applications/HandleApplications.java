@@ -69,6 +69,7 @@ public class HandleApplications {
 			if(level > 10 || level < 1){
 				throw new ApplicationException();
 			}
+			if(!this.skills.containsKey(skillName)){throw new ApplicationException();}
 			appSkills.add(new Skill(skillName,level));
 		}
 		this.applicants.put(name, new Applicant(name,appSkills));
@@ -141,7 +142,7 @@ public class HandleApplications {
 		this.winnerPerPosition.put(positionName, applicantName);
 		pos.setWinner(applicantName);
 		this.positions.replace(positionName,pos);
-		return allLevel;
+		return retr;
 	}
 	
 	public SortedMap<String, Long> skill_nApplicants() {
